@@ -1,6 +1,6 @@
 let row = 25
 let column = 60
-let activePoints = []
+let inputData = []
 let modes = {initial: 1, plotting: 2, searching: 3, done:4}
 let mode = modes.initial
 
@@ -22,14 +22,15 @@ function readCharacterButtonHandler () {
     let readCharacterButton = document.querySelector('#read_character_btn')
     let statusMessage = document.querySelector('#status_message')
     readCharacterButton.addEventListener('click', async event => {
-        if (mode === modes.initial) {
-            // console.log(activePoints)
+        if (mode === modes.initial || mode === modes.done) {
+            // console.log(inputData)
             mode = modes.searching
             statusMessage.innerHTML = ''
             statusMessage.insertAdjacentHTML('beforeend', `Searching <i class="fas fa-spinner"></i>`)
-            let result =  await engine.readCharacter({row, column, activePoints, trainingData})
-            console.log(result)
+            let result =  await engine.readCharacter({inputData, trainingData})
+            statusMessage.innerHTML = "Result: " + result
             mode = modes.done
+            // statusMessage.innerHTML = 'Done'
         }
 
     })
@@ -42,7 +43,7 @@ function resetButtonHandler () {
             let statusMessage = document.querySelector('#status_message')
             statusMessage.innerHTML = ''
             resetGraph(true, true)
-            activePoints = []
+            inputData = []
             mode = modes.initial
         }
     })
@@ -51,13 +52,13 @@ function resetButtonHandler () {
 function menuHandler() {
     let graphBody = document.querySelector('#graph_body')
     graphBody.addEventListener('mousedown', event => {
-        if (mode===modes.initial){
+        if (mode===modes.initial || mode===mode.done){
             plotActivePoint(event)
         }
     })
     graphBody = document.querySelector('#graph_body')
     graphBody.addEventListener('dragenter', event => {
-        if (mode===modes.initial){
+        if (mode===modes.initial || mode===mode.done){
             plotActivePoint(event)
         }
     })
@@ -121,18 +122,18 @@ function plotActivePoint (event) {
         Number(event.target.getAttribute('data-column'))
     ]
     let inActivePoints = resetActivePoints(point)
-    // let inActivePoints = activePoints.filter(activePoint => activePoint.equals(point)).length
+    // let inActivePoints = inputData.filter(activePoint => activePoint.equals(point)).length
     if (!inActivePoints) {
-        activePoints.unshift(point)
+        inputData.unshift(point)
         indicateActivePointsBrick(point)
     }
 }
 
 function resetActivePoints (point) {
     let isBrick = false
-    activePoints.map((brick, index) => {
+    inputData.map((brick, index) => {
         if (point.equals(brick)){
-            activePoints.splice(index, 1)
+            inputData.splice(index, 1)
             resetActivePointsBrick(point)
             isBrick = true
         }
