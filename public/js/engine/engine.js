@@ -6,18 +6,18 @@ let engine = {
         heightWidthRationProbabilities.map(probability => {
             if (probability.ratio > result.ratio) result = probability
         })
-        return result.key
+        return result.ratio>=.25 ? result.key : 'unknown'
     },
 
-    height: (array) => {
-        let maxRow = engine.maxRow(array)
-        let minRow = engine.minRow(array)
+    height: (character) => {
+        let maxRow = engine.maxRow(character)
+        let minRow = engine.minRow(character)
         return maxRow-minRow > 0 ? maxRow-minRow: 0.1
     },
 
-    width: (array) => {
-        let maxColumn = engine.maxColumn(array)
-        let minColumn = engine.minColumn(array)
+    width: (character) => {
+        let maxColumn = engine.maxColumn(character)
+        let minColumn = engine.minColumn(character)
         return maxColumn-minColumn > 0 ? maxColumn-minColumn: 0.1
     },
 
