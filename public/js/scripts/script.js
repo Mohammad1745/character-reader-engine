@@ -23,11 +23,12 @@ function readCharacterButtonHandler () {
     let statusMessage = document.querySelector('#status_message')
     readCharacterButton.addEventListener('click', async event => {
         if (mode === modes.initial) {
-            console.log(activePoints)
+            // console.log(activePoints)
             mode = modes.searching
             statusMessage.innerHTML = ''
             statusMessage.insertAdjacentHTML('beforeend', `Searching <i class="fas fa-spinner"></i>`)
-            // let result =  await dijkstra.search({row, column, weights, wall,startingPoint, endPoint})
+            let result =  await engine.readCharacter({row, column, activePoints, trainingData})
+            console.log(result)
             mode = modes.done
         }
 
