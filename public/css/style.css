@@ -1,0 +1,100 @@
+:root {
+    --primary: #aaa;
+    --secondary: #777;
+    --initiate-active: #555;
+    --animate-active: #ddd;
+    --active: #000;
+    --weight: #d94;
+}
+/*body {*/
+/*    background-color: var(--primary);*/
+/*}*/
+.cursor-pointer {
+    cursor: pointer;
+}
+.fa-spinner {
+    -webkit-animation:spin 3s linear infinite;
+    -moz-animation:spin 3s linear infinite;
+    animation:spin 3s linear infinite;
+}
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform:rotate(360deg);
+    }
+}
+/*
+App
+*/
+.navbar-brand{
+    font-weight: bold;
+    font-family: sans-serif;
+}
+.navbar-nav{
+    font-size: 15px;
+}
+.navbar-nav button{
+    font-size: 15px;
+}
+.navbar-nav .nav-item .nav-link{
+    color: rgba(255,255,255,.9);
+}
+.graph {
+    border-top: var(--primary) 1px solid;
+}
+.graph-body {
+    border-top: var(--primary) 1px solid;
+    border-bottom: var(--primary) 1px solid;
+}
+.application-info {
+    display: none;
+    position: absolute;
+    top: 125px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 100;
+}
+.application-info-header {
+    font-weight: bold;
+    font-size: 20px;
+}
+.application-info-cancel-btn {
+    position: relative;
+    float: right;
+}
+.node-row {
+    justify-content: center;
+}
+.node {
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*border-radius: 4%;*/
+    background-color: var(--secondary);
+    border-top: var(--primary) solid 1px;
+    border-left: var(--primary) solid 1px;
+}
+.node-example {
+    height: 20px;
+    width: 20px;
+}
+.node-initiate-active {
+    background-color: var(--initiate-active);
+}
+.node-active {
+    border-color: var(--active);
+    background-color: var(--active);
+    animation: active .2s linear normal;
+}
+@keyframes active {
+    0%{
+        background-color: var(--animate-active);
+    }
+    100% {
+        background-color: var(--active);
+    }
+}
