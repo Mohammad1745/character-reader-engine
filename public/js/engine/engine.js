@@ -1,12 +1,14 @@
 let engine = {
+    threshold: 0.25,
+
     readCharacter: ({inputData, trainingData}) => {
-        let heightWidthRationProbabilities = heightWidthRatioStroke.probabilities({row, column, inputData, trainingData})
-        console.log(heightWidthRationProbabilities, 'Height-width ration probability')
+        let heightWidthRationProbabilities = heightWidthRatioStroke.probabilities({inputData, trainingData})
+        console.log(heightWidthRationProbabilities, 'Height-width ratio probabilities')
         let result = heightWidthRationProbabilities[0]
         heightWidthRationProbabilities.map(probability => {
-            if (probability.ratio > result.ratio) result = probability
+            if (probability.value > result.value) result = probability
         })
-        return result.ratio>=.25 ? result.key : 'unknown'
+        return result.value>=engine.threshold ? result.key : 'unknown'
     },
 
     height: (character) => {

@@ -35,7 +35,7 @@ let heightWidthRatioStroke = {
                 (bottomPortionInputRatio / bottomPortionTrainingRatio)
                 : (bottomPortionTrainingRatio / bottomPortionInputRatio)
 
-            probabilities.push({key, ratio: (fullProbability + topPortionProbability + bottomPortionProbability)/3})
+            probabilities.push({key, value: (fullProbability + topPortionProbability + bottomPortionProbability)/3})
 
         })
         return [...probabilities]
