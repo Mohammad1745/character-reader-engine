@@ -7,14 +7,14 @@ let heightWidthRatioStroke = {
     characterProbabilities: (inputData, trainingData) => {
         let probabilities = []
 
-        let portions = heightWidthRatioStroke.divideCharacter(inputData)
+        let portions = engine.divideCharacter(inputData)
         let fullInputRatio = engine.height(inputData) / engine.width(inputData)
         let topPortionInputRatio = engine.height(portions[0]) / engine.width(portions[0])
         let bottomPortionInputRatio = engine.height(portions[1]) / engine.width(portions[1])
 
         Object.keys(trainingData).map(key => {
-            let smallSizeTrainingPortions = heightWidthRatioStroke.divideCharacter(trainingData[key].smaller)
-            let largeSizeTrainingPortions = heightWidthRatioStroke.divideCharacter(trainingData[key].larger)
+            let smallSizeTrainingPortions = engine.divideCharacter(trainingData[key].smaller)
+            let largeSizeTrainingPortions = engine.divideCharacter(trainingData[key].larger)
             let smallSizeFullTrainingRatio = engine.height(trainingData[key].smaller) / engine.width(trainingData[key].smaller)
             let largeSizeFullTrainingRatio = engine.height(trainingData[key].larger) / engine.width(trainingData[key].larger)
             let smallSizeTopPortionTrainingRatio = engine.height(smallSizeTrainingPortions[0]) / engine.width(smallSizeTrainingPortions[0])
@@ -39,21 +39,5 @@ let heightWidthRatioStroke = {
 
         })
         return [...probabilities]
-    },
-
-    divideCharacter: array => {
-        let minRow = engine.minRow(array)
-        let maxRow = engine.maxRow(array)
-        let topPortion = []
-        let bottomPortion = []
-        array.map(point => {
-            if (point[0]<Math.round((minRow+maxRow)/2)) topPortion.unshift(point)
-            else if (point[0]>Math.round((minRow+maxRow)/2)) bottomPortion.unshift(point)
-            else {
-                topPortion.unshift(point)
-                bottomPortion.unshift(point)
-            }
-        })
-        return [topPortion, bottomPortion]
     }
 }
