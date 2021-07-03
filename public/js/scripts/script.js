@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function handleUserEvent () {
     readCharacterButtonHandler()
     resetButtonHandler()
+    printButtonHandler()
     menuHandler()
     applicationInfoHandler()
 }
@@ -42,9 +43,27 @@ function resetButtonHandler () {
         if (mode===modes.initial||mode===modes.done){
             let statusMessage = document.querySelector('#status_message')
             statusMessage.innerHTML = ''
-            resetGraph(true, true)
+            resetGraph()
             inputData = []
             mode = modes.initial
+        }
+    })
+}
+
+function printButtonHandler () {
+    let printButton = document.querySelector('#print_btn')
+    printButton.addEventListener('click', async event => {
+        if (mode===modes.initial){
+            let character = document.querySelector("#character").value
+            if (character){
+                inputData = []
+                resetGraph()
+                character = trainingData[character].smaller
+                character.map(point => {
+                    inputData.unshift(point)
+                    indicateActivePointsBrick(point)
+                })
+            }
         }
     })
 }
