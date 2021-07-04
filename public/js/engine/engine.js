@@ -1,14 +1,17 @@
 let engine = {
-    threshold: 0.25,
+    threshold: 0.01,
 
-    readCharacter: ({inputData, trainingData}) => {
+    readCharacter: (inputData) => {
         let probabilities = []
         let heightWidthRatioProbabilities = heightWidthRatioStroke.probabilities({inputData, trainingData})
         let centreOfMassRatioProbabilities = centreOfMassRationStroke.probabilities({inputData, trainingData})
+        let pixelDensityRatioProbabilities = pixelDensityRationStroke.probabilities({inputData, trainingData})
         console.log(heightWidthRatioProbabilities, 'Height-width ratio probabilities')
         console.log(centreOfMassRatioProbabilities, 'Centre of mass ratio probabilities')
+        console.log(pixelDensityRatioProbabilities, 'Pixel density ratio probabilities')
         heightWidthRatioProbabilities.map((element, index) => {
-            let populatedValue = element.value*0.1 + centreOfMassRatioProbabilities[index].value*0.9
+            let populatedValue = element.value*0.15 + centreOfMassRatioProbabilities[index].value*0.3 + pixelDensityRatioProbabilities[index].value*0.55
+            // let populatedValue = element.value*centreOfMassRatioProbabilities[index].value*pixelDensityRatioProbabilities[index].value
             probabilities.push({key: element.key, value: populatedValue})
         })
         console.log(probabilities, 'average probabilities')
@@ -19,7 +22,23 @@ let engine = {
         return result.value>=engine.threshold ? result.key : 'unknown'
     },
 
-    divideCharacter: array => {
+    divideCharacterX: array => {
+        let minColumn = engine.minColumn(array)
+        let maxColumn = engine.maxColumn(array)
+        let topPortion = []
+        let bottomPortion = []
+        array.map(point => {
+            if (point[0]<Math.round((minColumn+maxColumn)/2)) topPortion.unshift(point)
+            else if (point[0]>Math.round((minColumn+maxColumn)/2)) bottomPortion.unshift(point)
+            else {
+                topPortion.unshift(point)
+                bottomPortion.unshift(point)
+            }
+        })
+        return [topPortion, bottomPortion]
+    },
+
+    divideCharacterY: array => {
         let minRow = engine.minRow(array)
         let maxRow = engine.maxRow(array)
         let topPortion = []
@@ -33,6 +52,30 @@ let engine = {
             }
         })
         return [topPortion, bottomPortion]
+    },
+
+    divideCharacter3Y: array => {
+        let minRow = engine.minRow(array)
+        let maxRow = engine.maxRow(array)
+        let mid1Row = Math.round((minRow+maxRow)/3)
+        let mid2Row = Math.round((minRow+maxRow)*2/3)
+        let topPortion = []
+        let middlePortion = []
+        let bottomPortion = []
+        array.map(point => {
+            if (point[0] < mid1Row) topPortion.unshift(point)
+            else if (point[0] === mid1Row) {
+                topPortion.unshift(point)
+                middlePortion.unshift(point)
+            }
+            else if (point[0] < mid2Row) middlePortion.unshift(point)
+            else if (point[0] === mid2Row) {
+                middlePortion.unshift(point)
+                bottomPortion.unshift(point)
+            }
+            else bottomPortion.unshift(point)
+        })
+        return [topPortion, middlePortion, bottomPortion]
     },
 
     height: (character) => {
