@@ -28,7 +28,7 @@ function readCharacterButtonHandler () {
             mode = modes.searching
             statusMessage.innerHTML = ''
             statusMessage.insertAdjacentHTML('beforeend', `Searching <i class="fas fa-spinner"></i>`)
-            let result =  await engine.readCharacter({inputData, trainingData})
+            let result =  await engine.readCharacter(inputData)
             statusMessage.innerHTML = "Result: " + result
             mode = modes.done
             // statusMessage.innerHTML = 'Done'

@@ -7,14 +7,14 @@ let heightWidthRatioStroke = {
     characterProbabilities: (inputData, trainingData) => {
         let probabilities = []
 
-        let portions = engine.divideCharacter(inputData)
+        let portions = engine.divideCharacterY(inputData)
         let fullInputRatio = engine.height(inputData) / engine.width(inputData)
         let topPortionInputRatio = engine.height(portions[0]) / engine.width(portions[0])
         let bottomPortionInputRatio = engine.height(portions[1]) / engine.width(portions[1])
 
         Object.keys(trainingData).map(key => {
-            let smallSizeTrainingPortions = engine.divideCharacter(trainingData[key].smaller)
-            let largeSizeTrainingPortions = engine.divideCharacter(trainingData[key].larger)
+            let smallSizeTrainingPortions = engine.divideCharacterY(trainingData[key].smaller)
+            let largeSizeTrainingPortions = engine.divideCharacterY(trainingData[key].larger)
             let smallSizeFullTrainingRatio = engine.height(trainingData[key].smaller) / engine.width(trainingData[key].smaller)
             let largeSizeFullTrainingRatio = engine.height(trainingData[key].larger) / engine.width(trainingData[key].larger)
             let smallSizeTopPortionTrainingRatio = engine.height(smallSizeTrainingPortions[0]) / engine.width(smallSizeTrainingPortions[0])
