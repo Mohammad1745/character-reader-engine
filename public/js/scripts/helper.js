@@ -23,3 +23,6 @@ const randomNumber = (min, max, except=null) => {
 const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
+
+const xor = (a, b) => !a && b || a && !b
+const xnor = (a, b) => !xor(a,b)

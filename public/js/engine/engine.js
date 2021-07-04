@@ -1,17 +1,19 @@
 let engine = {
-    threshold: 0.01,
+    threshold: 0.15,
 
     readCharacter: (inputData) => {
         let probabilities = []
         let heightWidthRatioProbabilities = heightWidthRatioStroke.probabilities({inputData, trainingData})
         let centreOfMassRatioProbabilities = centreOfMassRationStroke.probabilities({inputData, trainingData})
         let pixelDensityRatioProbabilities = pixelDensityRationStroke.probabilities({inputData, trainingData})
+        let centreToEdgeDistanceRatioProbabilities = centreToEdgeDistanceRatioStroke.probabilities({inputData, trainingData})
         console.log(heightWidthRatioProbabilities, 'Height-width ratio probabilities')
         console.log(centreOfMassRatioProbabilities, 'Centre of mass ratio probabilities')
         console.log(pixelDensityRatioProbabilities, 'Pixel density ratio probabilities')
+        console.log(centreToEdgeDistanceRatioProbabilities, 'Centre to edge distance ratio probabilities')
         heightWidthRatioProbabilities.map((element, index) => {
-            let populatedValue = element.value*0.15 + centreOfMassRatioProbabilities[index].value*0.3 + pixelDensityRatioProbabilities[index].value*0.55
-            // let populatedValue = element.value*centreOfMassRatioProbabilities[index].value*pixelDensityRatioProbabilities[index].value
+            // let populatedValue = element.value*0.08 + centreOfMassRatioProbabilities[index].value*0.16 + pixelDensityRatioProbabilities[index].value*0.16 + centreToEdgeDistanceRatioProbabilities[index].value*0.6
+            let populatedValue = (element.value*0.2 + centreOfMassRatioProbabilities[index].value*0.4 + pixelDensityRatioProbabilities[index].value*0.4) * centreToEdgeDistanceRatioProbabilities[index].value
             probabilities.push({key: element.key, value: populatedValue})
         })
         console.log(probabilities, 'average probabilities')
@@ -91,6 +93,9 @@ let engine = {
     },
 
     topLeft: array => [engine.minRow(array), engine.minColumn(array)],
+    topRight: array => [engine.minRow(array), engine.maxColumn(array)],
+    bottomRight: array => [engine.maxRow(array), engine.maxColumn(array)],
+    bottomLeft: array => [engine.maxRow(array), engine.minColumn(array)],
 
     maxRow: (array) => {
         let maxRow = array[0][0]
@@ -111,7 +116,7 @@ let engine = {
     maxColumn: (array) => {
         let maxColumn = array[0][1]
         for (let element of array) {
-            if (element[0] > maxColumn) maxColumn = element[1]
+            if (element[1] > maxColumn) maxColumn = element[1]
         }
         return maxColumn
     },
