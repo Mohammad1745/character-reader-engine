@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
 function handleUserEvent () {
     readCharacterButtonHandler()
     resetButtonHandler()
-    printButtonHandler()
     menuHandler()
     applicationInfoHandler()
 }
@@ -46,24 +45,6 @@ function resetButtonHandler () {
             resetGraph()
             inputData = []
             mode = modes.initial
-        }
-    })
-}
-
-function printButtonHandler () {
-    let printButton = document.querySelector('#print_btn')
-    printButton.addEventListener('click', async event => {
-        if (mode===modes.initial){
-            let character = document.querySelector("#character").value
-            if (character){
-                inputData = []
-                resetGraph()
-                character = trainingData[character].smaller
-                character.map(point => {
-                    inputData.unshift(point)
-                    indicateActivePointsBrick(point)
-                })
-            }
         }
     })
 }
