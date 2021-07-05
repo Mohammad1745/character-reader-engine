@@ -1,16 +1,26 @@
 let engine = {
     threshold: 0.15,
 
+    read: (inputData, row, column) => {
+        let characters = engine.extractCharacters(inputData, row, column)
+        let result = characters.map( character => engine.readCharacter(character))
+        let unknown = result.filter(character => character==='unknown').length
+        if (unknown) return `Unknown: ${unknown}`
+        else return result.join('')
+    },
+
     readCharacter: (inputData) => {
         let probabilities = []
+
         let heightWidthRatioProbabilities = heightWidthRatioStroke.probabilities({inputData, trainingData})
         let centreOfMassRatioProbabilities = centreOfMassRationStroke.probabilities({inputData, trainingData})
         let pixelDensityRatioProbabilities = pixelDensityRationStroke.probabilities({inputData, trainingData})
         let centreToEdgeDistanceRatioProbabilities = centreToEdgeDistanceRatioStroke.probabilities({inputData, trainingData})
-        console.log(heightWidthRatioProbabilities, 'Height-width ratio probabilities')
-        console.log(centreOfMassRatioProbabilities, 'Centre of mass ratio probabilities')
-        console.log(pixelDensityRatioProbabilities, 'Pixel density ratio probabilities')
-        console.log(centreToEdgeDistanceRatioProbabilities, 'Centre to edge distance ratio probabilities')
+
+        // console.log(heightWidthRatioProbabilities, 'Height-width ratio probabilities')
+        // console.log(centreOfMassRatioProbabilities, 'Centre of mass ratio probabilities')
+        // console.log(pixelDensityRatioProbabilities, 'Pixel density ratio probabilities')
+        // console.log(centreToEdgeDistanceRatioProbabilities, 'Centre to edge distance ratio probabilities')
         heightWidthRatioProbabilities.map((element, index) => {
             // let populatedValue = element.value*0.08 + centreOfMassRatioProbabilities[index].value*0.16 + pixelDensityRatioProbabilities[index].value*0.16 + centreToEdgeDistanceRatioProbabilities[index].value*0.6
             let populatedValue = (element.value*0.2 + centreOfMassRatioProbabilities[index].value*0.4 + pixelDensityRatioProbabilities[index].value*0.4) * centreToEdgeDistanceRatioProbabilities[index].value
@@ -22,6 +32,27 @@ let engine = {
             if (probability.value > result.value) result = probability
         })
         return result.value>=engine.threshold ? result.key : 'unknown'
+    },
+
+    extractCharacters: (inputData, row, column) => {
+        let index = -1
+        let characters = []
+        let gap = 0
+
+        for (let c=0; c<column; c++) {
+            let points = inputData.filter(point => point[1]===c)
+            if (points.length){
+                if (gap>=3) {
+                    index++
+                    characters.push([])
+                }
+                points.map( point => characters[index].unshift(point))
+                gap = 0
+            } else {
+                gap++
+            }
+        }
+        return characters
     },
 
     divideCharacterX: array => {
