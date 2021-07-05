@@ -26,7 +26,7 @@ let engine = {
             let populatedValue = (element.value*0.2 + centreOfMassRatioProbabilities[index].value*0.4 + pixelDensityRatioProbabilities[index].value*0.4) * centreToEdgeDistanceRatioProbabilities[index].value
             probabilities.push({key: element.key, value: populatedValue})
         })
-        console.log(probabilities, 'average probabilities')
+        // console.log(probabilities, 'average probabilities')
         let result = probabilities[0]
         probabilities.map(probability => {
             if (probability.value > result.value) result = probability
@@ -42,7 +42,7 @@ let engine = {
         for (let c=0; c<column; c++) {
             let points = inputData.filter(point => point[1]===c)
             if (points.length){
-                if (gap>=3) {
+                if (index===-1 || gap>=3) {
                     index++
                     characters.push([])
                 }
