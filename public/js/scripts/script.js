@@ -8,6 +8,7 @@ const CLEAR_GRAPH_MESSAGE = "Clear Graph First"
 
 document.addEventListener('DOMContentLoaded', () => {
     plotGraph()
+    updateApplicationInfo()
     handleUserEvent()
 })
 
@@ -80,8 +81,13 @@ function applicationInfoHandler() {
 function updateApplicationInfo() {
     let applicationInfoHeader = document.querySelector('#application_info_header')
     let applicationInfoBody = document.querySelector('#application_info_body')
-    applicationInfoHeader.innerHTML = "Application"
-    applicationInfoBody.innerHTML = "Description"
+    applicationInfoHeader.innerHTML = "How to use"
+    applicationInfoBody.innerHTML = `
+        1. App can read decimal digits 0-9. <br>
+        2. Multiple digits are allowed. <br>
+        3. Gap between each digits should be more than 3 boxes. <br>
+        4. Size should be more than half of the height of the graph. <br>
+    `
 }
 
 function plotGraph() {
