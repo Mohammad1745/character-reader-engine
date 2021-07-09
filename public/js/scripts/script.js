@@ -3,6 +3,7 @@ let column = 60
 let inputData = []
 let modes = {initial: 1, plotting: 2, searching: 3, done:4}
 let mode = modes.initial
+let mouseDown = false
 
 const CLEAR_GRAPH_MESSAGE = "Clear Graph First"
 
@@ -53,16 +54,26 @@ function resetButtonHandler () {
 function menuHandler() {
     let graphBody = document.querySelector('#graph_body')
     graphBody.addEventListener('mousedown', event => {
+        event.preventDefault()
         if (mode===modes.initial || mode===mode.done){
+            mouseDown = true
             plotActivePoint(event)
         }
     })
     graphBody = document.querySelector('#graph_body')
-    graphBody.addEventListener('dragenter', event => {
-        if (mode===modes.initial || mode===mode.done){
-            plotActivePoint(event)
+    graphBody.addEventListener('mouseup', event => {
+        if ((mode===modes.initial || mode===mode.done) && mouseDown){
+            mouseDown = false
         }
     })
+    let nodes = document.querySelector('#graph_body').querySelectorAll('.node')
+    for (let node of nodes) {
+        node.addEventListener('mouseenter', event => {
+            if ((mode===modes.initial || mode===mode.done) && mouseDown){
+                plotActivePoint(event)
+            }
+        })
+    }
 }
 
 function applicationInfoHandler() {
