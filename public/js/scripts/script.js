@@ -7,10 +7,11 @@ let mouseDown = false
 
 const CLEAR_GRAPH_MESSAGE = "Clear Graph First"
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     plotGraph()
     updateApplicationInfo()
     handleUserEvent()
+    await countDown()
 })
 
 function handleUserEvent () {
@@ -77,7 +78,7 @@ function menuHandler() {
 }
 
 function applicationInfoHandler() {
-    let applicationInfoButton = document.querySelector('#graph_header').querySelector('.application-info-btn')
+    let applicationInfoButton = document.querySelector('#graph_header').querySelector('#application_info_btn')
     applicationInfoButton.addEventListener('click', event => {
         let applicationInfo = document.querySelector('#application_info')
         applicationInfo.style.display = "flex"
@@ -99,6 +100,21 @@ function updateApplicationInfo() {
         3. Gap between each digits should be more than 3 boxes. <br>
         4. Size should be more than half of the height of the graph. <br>
     `
+}
+
+async function countDown () {
+    await sleep(500)
+    for (let number = 9; number>=0; number--){
+        let character = trainingData[number].smaller
+        character.map(point => {
+            point =[ point[0]+5, point[1]+20]
+            indicateActivePointsBrick(point)
+        })
+        await sleep(1000)
+        resetGraph()
+    }
+    let applicationInfoButton = document.querySelector('#graph_header').querySelector('#application_info_btn')
+    applicationInfoButton.click()
 }
 
 function plotGraph() {
