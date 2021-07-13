@@ -46,6 +46,7 @@ App
     border-top: var(--primary) 1px solid;
     border-bottom: var(--primary) 1px solid;
 }
+.result,
 .application-info {
     display: none;
     position: absolute;
@@ -54,14 +55,23 @@ App
     transform: translate(-50%, 0);
     z-index: 100;
 }
+.result-header,
 .application-info-header {
     font-weight: bold;
     font-size: 20px;
 }
+.result-cancel-btn,
 .application-info-cancel-btn {
     position: relative;
     float: right;
 }
+.result-body {
+    padding: 0 50px;
+    font-size: 150px;
+    min-width: 250px;
+    text-align: center;
+}
+
 .node-row {
     justify-content: center;
 }

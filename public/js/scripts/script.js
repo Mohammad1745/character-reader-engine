@@ -32,6 +32,7 @@ function readCharacterButtonHandler () {
             statusMessage.insertAdjacentHTML('beforeend', `Searching <i class="fas fa-spinner"></i>`)
             let result =  await engine.read(inputData, row, column)
             statusMessage.innerHTML = "Result: " + result
+            showResultPopUp(result)
             mode = modes.done
             // statusMessage.innerHTML = 'Done'
         }
@@ -43,8 +44,10 @@ function resetButtonHandler () {
     let resetButton = document.querySelector('#reset_btn')
     resetButton.addEventListener('click', async event => {
         if (mode===modes.initial||mode===modes.done){
+            let result = document.querySelector('#result')
             let statusMessage = document.querySelector('#status_message')
             statusMessage.innerHTML = ''
+            result.style.display = "none"
             resetGraph()
             inputData = []
             mode = modes.initial
@@ -75,6 +78,24 @@ function menuHandler() {
             }
         })
     }
+}
+
+function showResultPopUp(number) {
+    let resultHeader = document.querySelector('#result_header')
+    let resultBody = document.querySelector('#result_body')
+
+    let result = document.querySelector('#result')
+    result.style.display = "flex"
+    resultHeader.innerHTML = "Result"
+    resultBody.innerHTML = number
+
+    let resultCancelButton = document.querySelector('#result_cancel_btn')
+    resultCancelButton.addEventListener('click', event => {
+        let result = document.querySelector('#result')
+        result.style.display = "none"
+        resultHeader.innerHTML = ""
+        resultBody.innerHTML = ""
+    })
 }
 
 function applicationInfoHandler() {
